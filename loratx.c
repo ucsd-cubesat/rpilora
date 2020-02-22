@@ -38,7 +38,7 @@ void handle_signal( int signum ) {
 }
 
 //payload
-char payload[25] = "Hello, world!";
+char payload[BUFFER_SIZE] = "Hello, world!";
 
 void tx_test() {
   

@@ -38,7 +38,7 @@ void handle_signal( int signum ) {
 }
 
 //payload
-char payload[25];
+char payload[BUFFER_SIZE];
 
 void rx_test() {
   
@@ -49,13 +49,11 @@ void rx_test() {
   while( 1 ) {
     
     //switch back to cont.
+    write_reg( REG_OP_MODE, LORA_SLEEP );
     write_reg( REG_OP_MODE, LORA_RX_CONT );
     
     //wait for Rx to end
-    uint8_t flag;
-    while( !(flag = read_reg( REG_IRQ_FLAGS ) && FLAG_RX_DONE) ) {
-      printf( "Num bytes available: %d\r\n", numBytes =  read_reg( REG_RX_NUM_BYTES ) );
-    }
+    while( read_reg( REG_RX_NUM_BYTES ) != BUFFER_SIZE ) {}
     
     //confirm Rx
     write_reg( REG_OP_MODE, LORA_STANDBY );

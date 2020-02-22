@@ -47,18 +47,44 @@ uint8_t lora_init() {
   
   // Set SYNC word
   write_reg( REG_SYNC_WORD, DEFAULT_LORA_SYNC_WORD );
-  
+
+  // Set Power (TODO fix magic numbers)
+  uint8_t level = DEFAULT_LORA_LEVEL;
+  uint8_t dac;
+  uint8_t mA;
+
+  if( level > 20 ) level = 20;
+  else if( level < 2 ) level = 2;
+
+  if( level > 17 ) {
+    level -= 3;
+    dac = 0x87;
+    mA = 140;
+  }
+  else {
+    dac = 0x84;
+    mA = 100;
+  }
+
+  uint8_t ocp = 27;
+  if( mA <= 120 ) ocp = (mA - 45)/5;
+  else if( mA <= 240 ) ocp = (mA + 30)/10;
+
+  write_reg( REG_PA_DAC, dac );
+  write_reg( REG_OCP, 0x20 | (0x1F & ocp) );
+  write_reg( REG_PA_CONFIG, PA_BOOST | (level - 2) );
+
   // Switch to LoRa standby mode
   write_reg( REG_OP_MODE, LORA_STANDBY );
   
   //check that the module is in standby mode
   bootmode = read_reg( REG_OP_MODE );
   if( bootmode != LORA_STANDBY ) {
-    fprintf( stderr, "Could not initialize LORA\r\nBoot mode is 0x%x\r\n", bootmode );
+    printf( "Could not initialize LORA\r\nBoot mode is 0x%x\r\n", bootmode );
     return 0;
   }
   
-  printf( "LORA on standby\r\n" );
+  printf( "LORA on standby with frequency %lu and power level %hu dBm\r\n", freq, level );
   return 1;
 }
 
