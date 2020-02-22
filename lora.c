@@ -40,10 +40,10 @@ uint8_t lora_init() {
   write_reg( REG_MAX_PAYLOAD_LEN, BUFFER_SIZE );
   
   // Set LNA boost
-  write_reg( REG_LNA, read_reg( REG_LNA ) | DEFAULT_LORA_LNA );
+  //write_reg( REG_LNA, read_reg( REG_LNA ) | DEFAULT_LORA_LNA );
 
   // Set auto AGC
-  write_reg( REG_MODEM_CONFIG3, DEFAULT_LORA_AGC );
+  //write_reg( REG_MODEM_CONFIG3, DEFAULT_LORA_AGC );
   
   // Set SYNC word
   write_reg( REG_SYNC_WORD, DEFAULT_LORA_SYNC_WORD );
@@ -70,8 +70,8 @@ uint8_t lora_init() {
   if( mA <= 120 ) ocp = (mA - 45)/5;
   else if( mA <= 240 ) ocp = (mA + 30)/10;
 
-  write_reg( REG_PA_DAC, dac );
-  write_reg( REG_OCP, 0x20 | (0x1F & ocp) );
+  //write_reg( REG_PA_DAC, dac );
+  //write_reg( REG_OCP, 0x20 | (0x1F & ocp) );
   write_reg( REG_PA_CONFIG, PA_BOOST | (level - 2) );
 
   // Switch to LoRa standby mode
@@ -84,7 +84,7 @@ uint8_t lora_init() {
     return 0;
   }
   
-  printf( "LORA on standby with frequency %lu and power level %hu dBm\r\n", freq, level );
+  printf( "LORA on standby with frequency %llu and power level %hhu dBm\r\n", freq, level );
   return 1;
 }
 

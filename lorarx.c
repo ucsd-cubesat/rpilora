@@ -62,15 +62,15 @@ void rx_test() {
     //set SPI access to fifo at top of last Rx
     write_reg( REG_FIFO_ADDR_PTR, read_reg( REG_FIFO_RX_CURRENT_ADDR ) );
     
-    //load payload from FIFO
+    //load payload from FIFOa
+    numBytes = read_reg( REG_RX_NUM_BYTES );
     for( size_t i = 0; i < numBytes; i++ ){
       payload[i] = read_reg( REG_FIFO );
     }
     
     rssidB = read_reg( REG_PACKET_RSSI ) - 157;
     printf( "Packet received, strength %d dBm\r\n------------------------\r\n", rssidB );
-    printf( payload );
-    printf( "\r\n------------------------\r\n" );
+    printf( "\"%s\"\r\n------------------------\r\n", payload );
   }
 }
 

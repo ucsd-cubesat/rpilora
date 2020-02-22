@@ -131,11 +131,11 @@
 #define PA_BOOST                  0x80
 
 /* Frequency Calcualtion */
-#define LORA_FREQ(f) (((uint64_t)f << 19)/32000000)
+#define LORA_FREQ(f) (((uint64_t)f << 19)/32E6)
 
 /* Init Values */
 #define BUFFER_SIZE 50
-#define DEFAULT_LORA_FREQ LORA_FREQ(868000000)
+#define DEFAULT_LORA_FREQ LORA_FREQ(915E6)
 #define DEFAULT_LORA_LNA 0x03
 #define DEFAULT_LORA_AGC 0x04
 #define DEFAULT_LORA_SYNC_WORD 'k'
